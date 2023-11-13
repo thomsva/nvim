@@ -228,6 +228,8 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
+'xiyaowong/transparent.nvim',
+
 }, {})
 
 -- [[ Setting options ]]
@@ -513,6 +515,7 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
+  rust_analyzer = { cmd = { "rustup", "run", "stable", "rust-analyzer" } },
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
@@ -597,5 +600,8 @@ cmp.setup {
   },
 }
 
+-- Make background transparent
+-- vim.cmd([[hi Normal ctermbg=none guibg=none]])
+vim.cmd([[TransparentEnable]]) -- using xiyaowong/transparent.nvim
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
