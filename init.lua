@@ -230,7 +230,9 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
-'xiyaowong/transparent.nvim',
+
+  'xiyaowong/transparent.nvim',
+  'mhartington/formatter.nvim',
 
 }, {})
 
@@ -518,7 +520,7 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  rust_analyzer = { cmd = { "rustup", "run", "stable", "rust-analyzer" } },
+  rust_analyzer = { cmd = { "rustup", "run", "stable", "rust-analyzer" } },  
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
@@ -611,3 +613,40 @@ cmp.setup {
 vim.cmd([[TransparentEnable]]) -- using xiyaowong/transparent.nvim
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
+require("formatter").setup(
+  {
+    logging = false,
+    filetype = {
+      rust = {
+        -- Rustfmt
+        function()
+          return {
+            exe = "rustfmt",
+            args = {"--emit=stdout"},
+            stdin = true
+          }
+        end
+      },
+      lua = {
+        -- luafmt
+        function()
+          return {
+            exe = "luafmt",
+            args = {"--indent-count", 2, "--stdin"},
+            stdin = true
+          }
+        end
+      }
+    }
+  }
+)
+
+-- format on save
+vim.cmd [[
+augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePost * FormatWrite
+augroup END
+]]
+
